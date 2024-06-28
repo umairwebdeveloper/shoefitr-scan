@@ -1,0 +1,273 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.shoefitr-image-border {
+	border: 7px solid #6a6a6a08;
+	padding: 2px;
+	border-radius: 22px;
+}
+
+.shoefitr-primary-heading {
+	font-size: 28px;
+	font-weight: 600;
+	color: #1f1d2a;
+	line-height: 125%;
+}
+
+.shoefitr-link {
+	text-decoration: none;
+	color: #504ef3;
+}
+
+.shoefitr-primary-button {
+	background-color: #20232d;
+	color: white;
+	padding: 15px;
+	text-align: center;
+	border-radius: 30px;
+	font-weight: 400;
+	font-size: 15px;
+	cursor: pointer;
+	text-decoration: none;
+	border: none;
+}
+
+.shoefitr-secondary-button {
+	background-color: transparent;
+	color: #373644;
+	padding: 15px;
+	text-align: center;
+	border: 1px solid #dddee5;
+	border-radius: 30px;
+	font-weight: 400;
+	font-size: 15px;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.shoefitr-primary-desc {
+	font-size: 14px;
+	font-weight: 400;
+	color: #737482;
+	line-height: 170%;
+}
+
+.shoefitr-secondary-heading {
+	font-size: 24px;
+	font-weight: 400;
+	color: #1f1d2a;
+	line-height: 120%;
+}
+
+.shoefitr-working-title {
+	font-size: 12px;
+	font-weight: 500;
+	color: #373644;
+	line-height: 150%;
+}
+
+.shoefitr-working-desc {
+	font-size: 14px;
+	font-weight: 400;
+	color: #4d4c5b;
+	line-height: 170%;
+}
+
+.shoefitr-working-box {
+	border: 1px solid #dfdfdf;
+	border-radius: 14px;
+}
+
+.shoefitr-working-box .box-title span {
+	font-size: 38px;
+	font-weight: 400;
+	color: #373644;
+	line-height: 150%;
+}
+
+.shoefitr-working-box .box-title h3 {
+	font-size: 18px;
+	font-weight: 400;
+	color: #373644;
+	line-height: 125%;
+}
+
+.shoefitr-working-box .box-desc {
+	background-color: #ecfdf5;
+	border-radius: 10px;
+}
+
+.shoefitr-working-box .box-desc p {
+	font-size: 10px;
+	font-weight: 500;
+	color: #737482;
+	line-height: 150%;
+}
+
+.shoefitr-working-box .box-desc span {
+	font-size: 32px;
+	font-weight: 400;
+	color: #059669;
+	line-height: 125%;
+}
+
+.shoefitr-back-button {
+	color: #4d4c5b;
+	font-weight: 400;
+	font-size: 15px;
+	cursor: pointer;
+	text-decoration: none;
+	border: none;
+}
+
+.shoefitr-result-box {
+	background-color: #ecfdf5;
+	border-radius: 12px;
+}
+
+.shoefitr-result-box p {
+	font-size: 12px;
+	font-weight: 500;
+	color: #737482;
+	line-height: 150%;
+}
+
+.shoefitr-result-box span {
+	font-size: 42px;
+	font-weight: 400;
+	color: #059669;
+	line-height: 125%;
+}
+
+.shoefitr-result-box2 {
+	border: 1px solid #e8e9ee;
+	border-radius: 12px;
+}
+
+.shoefitr-result-box2 p {
+	font-size: 12px;
+	font-weight: 500;
+	color: #737482;
+	line-height: 150%;
+}
+
+.shoefitr-result-box2 span {
+	font-size: 24px;
+	font-weight: 400;
+	color: #373644;
+	line-height: 125%;
+}
+
+.shoefitr-result-box3 p {
+	font-size: 12px;
+	font-weight: 500;
+	color: #737482;
+	line-height: 150%;
+}
+
+.shoefitr-result-box3 span {
+	font-size: 14px;
+	font-weight: 400;
+	color: #373644;
+	line-height: 150%;
+}
+
+.shoefitr-result-box4 {
+	border: 1px solid #e8e9ee;
+	border-radius: 16px;
+}
+
+.shoefitr-camera-button {
+	width: 74px;
+	height: 74px;
+	background-color: #ffffff; /* Change the color as needed */
+	border: 1px solid #dfdfdf;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	bottom: 20px; /* Adjust the distance from the bottom */
+	left: 50%;
+	transform: translateX(-50%);
+	color: #504ef3; /* FontAwesome icon color */
+	font-size: 30px; /* FontAwesome icon size */
+}
+
+.shoefitr-camera-box {
+	background-color: #00000035;
+}
+
+.shoefitr-camera-box h3 {
+	color: white;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 150%;
+}
+
+.shoefitr-camera-box p {
+	color: white;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 125%;
+}
+
+#videoElement {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	z-index: -1; /* Ensure it stays behind other elements */
+}
+
+.centered-icon {
+	background-color: #00000005;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+}
+
+.full-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.permission-box {
+	text-align: center;
+	border: 1px solid #ddd;
+	border-radius: 14px;
+	background-color: #f2f2f280;
+}
+
+.permission-button {
+	border-top: 1px solid #3c3c4336;
+	color: #007aff;
+}
+
+.permission-button:hover {
+	background-color: #f2f2f2;
+}
+
+.spin-icon {
+	font-size: 48px;
+	animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
