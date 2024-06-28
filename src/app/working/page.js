@@ -11,7 +11,7 @@ export default function Working() {
 			<div>
 				<div class="p-3">
 					<h1 class="text-center shoefitr-secondary-heading">
-						How it's working
+						How its working
 					</h1>
 					<div class="pt-3">
 						<div>

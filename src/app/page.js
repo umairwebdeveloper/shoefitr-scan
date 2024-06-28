@@ -76,7 +76,7 @@ export default function Home() {
 							onClick={() => router.push("/working")}
 							className="shoefitr-primary-button w-100"
 						>
-							See how it's working
+							See how it working
 						</button>
 					</div>
 				</div>
