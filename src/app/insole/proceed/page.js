@@ -39,7 +39,9 @@ export default function Proceed() {
 						</h3>
 						<div class="pt-3">
 							<a
-								onClick={() => router.push("/")}
+								onClick={() =>
+									router.push("/insole/camera-scan-right")
+								}
 								class="shoefitr-primary-button d-flex align-items-center justify-content-center"
 							>
 								Proceed

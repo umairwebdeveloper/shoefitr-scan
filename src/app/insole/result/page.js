@@ -70,8 +70,33 @@ export default function Result() {
 							alt="shoes"
 						/>
 					</div>
+					<div class="shoefitr-result-box3 p-3 text-center">
+						<p class="mb-1 text-uppercase">
+							Right & left feet heatmap
+						</p>
+					</div>
+					<div class="d-flex justify-content-between align-items-center gap-2 w-100">
+						<div class="flex-fill">
+							<Image
+								src="/assets/png/heat-shoes1.png"
+								class="img-fluid w-100"
+								alt="heat-shoes1"
+								width={100}
+								height={100}
+							/>
+						</div>
+						<div class="flex-fill">
+							<Image
+								src="/assets/png/heat-shoes2.png"
+								class="img-fluid w-100"
+								alt="heat-shoes2"
+								width={100}
+								height={100}
+							/>
+						</div>
+					</div>
 				</div>
-				<div class="px-3">
+				<div class="p-3">
 					<div class="d-flex justify-content-between align-items-center gap-2 mb-2">
 						<button class="shoefitr-primary-button w-100">
 							Save Result
@@ -88,7 +113,7 @@ export default function Result() {
 					</div>
 					<div>
 						<button
-							onClick={() => router.push("/camera-scan")}
+							onClick={() => router.push("/insole/camera-scan")}
 							class="shoefitr-secondary-button w-100"
 						>
 							<i class="fa-solid fa-rotate me-1"></i> Make another
@@ -101,7 +126,7 @@ export default function Result() {
 						Don’t remember the steps? <br />
 						Check{" "}
 						<a
-							onClick={() => router.push("/working")}
+							onClick={() => router.push("/insole/working")}
 							class="text-dark"
 						>
 							How it works

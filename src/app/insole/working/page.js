@@ -60,7 +60,28 @@ export default function Working() {
 							</p>
 						</div>
 					</div>
-					
+					<div class="pt-3">
+						<div>
+							<Image
+								src="/assets/jpg/working3.jpg"
+								class="img-fluid w-100"
+								alt="working 1"
+								style={{ borderRadius: "10px" }}
+								width={500}
+								height={500}
+							/>
+						</div>
+						<div class="pt-3">
+							<h3 class="shoefitr-working-title mb-1">
+								Step 3. Knee over knee position
+							</h3>
+							<p class="shoefitr-working-desc">
+								Place one knee over the other to scan the bottom
+								part of your feet. Then do the same with the
+								second foot.
+							</p>
+						</div>
+					</div>
 				</div>
 				<div class="px-3">
 					<div class="w-100 shoefitr-working-box text-center pb-4">
@@ -77,7 +98,7 @@ export default function Working() {
 				<div class="px-3 pt-4">
 					<div class="d-flex justify-content-center">
 						<button
-							onClick={() => router.push("/camera-scan")}
+							onClick={() => router.push("/insole/camera-scan")}
 							class="shoefitr-primary-button w-100"
 						>
 							Proceed to Scanning

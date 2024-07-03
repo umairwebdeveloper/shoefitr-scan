@@ -32,8 +32,8 @@ export default function CameraScan() {
 					style={{ top: "40%", left: "8%" }}
 					onClick={() => router.back()}
 				>
-                    <FaChevronLeft />
-                </span>
+					<FaChevronLeft />
+				</span>
 			</div>
 			<video ref={videoRef} id="videoElement" autoPlay></video>
 			<div className="centered-icon">
@@ -45,7 +45,10 @@ export default function CameraScan() {
 				/>
 			</div>
 			<div>
-				<div className="shoefitr-camera-button shadow-sm" onClick={() => router.push("/result")}>
+				<div
+					className="shoefitr-camera-button shadow-sm"
+					onClick={() => router.push("/insole/proceed")}
+				>
 					<FaCamera />
 				</div>
 			</div>

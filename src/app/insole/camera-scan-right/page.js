@@ -25,27 +25,32 @@ export default function CameraScan() {
 	return (
 		<main>
 			<div className="shoefitr-camera-box p-3 text-center position-relative">
-				<h3>Step 1 out of 2: Feet Scanning</h3>
-				<p className="m-0 p-0">Place your feet to match the mask</p>
+				<h3>step 3 out of 6: Right bottom scanning</h3>
+				<p className="m-0 p-0">
+					Please scan bottom part of your right foot
+				</p>
 				<span
 					className="position-absolute text-light"
 					style={{ top: "40%", left: "8%" }}
 					onClick={() => router.back()}
 				>
-                    <FaChevronLeft />
-                </span>
+					<FaChevronLeft />
+				</span>
 			</div>
 			<video ref={videoRef} id="videoElement" autoPlay></video>
 			<div className="centered-icon">
 				<img
-					src="/assets/png/mask.png"
+					src="/assets/png/right-foot.png"
 					className="img-fluid"
 					width="200"
 					alt="mask"
 				/>
 			</div>
 			<div>
-				<div className="shoefitr-camera-button shadow-sm" onClick={() => router.push("/result")}>
+				<div
+					className="shoefitr-camera-button shadow-sm"
+					onClick={() => router.push("/insole/camera-scan-left")}
+				>
 					<FaCamera />
 				</div>
 			</div>

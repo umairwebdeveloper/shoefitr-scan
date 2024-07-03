@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { FaCamera } from "react-icons/fa6";
 import { FaChevronLeft } from "react-icons/fa6";
-import { useRouter } from "next/navigation";
+import { FaSpinner} from "react-icons/fa6";
 
-export default function CameraScan() {
-	const router = useRouter();
+export default function CameraLoader() {
 	const videoRef = useRef(null);
 
 	useEffect(() => {
@@ -30,24 +28,13 @@ export default function CameraScan() {
 				<span
 					className="position-absolute text-light"
 					style={{ top: "40%", left: "8%" }}
-					onClick={() => router.back()}
 				>
-                    <FaChevronLeft />
-                </span>
+					<FaChevronLeft />
+				</span>
 			</div>
 			<video ref={videoRef} id="videoElement" autoPlay></video>
-			<div className="centered-icon">
-				<img
-					src="/assets/png/mask.png"
-					className="img-fluid"
-					width="200"
-					alt="mask"
-				/>
-			</div>
-			<div>
-				<div className="shoefitr-camera-button shadow-sm" onClick={() => router.push("/result")}>
-					<FaCamera />
-				</div>
+			<div class="centered-icon">
+				<FaSpinner class="spin-icon text-light" />
 			</div>
 		</main>
 	);
