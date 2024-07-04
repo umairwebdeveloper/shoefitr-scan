@@ -1,0 +1,1 @@
+ssh -i "./scan_page.pem" ubuntu@ec2-15-236-190-188.eu-west-3.compute.amazonaws.com
