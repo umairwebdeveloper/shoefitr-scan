@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { FaCamera, FaStop, FaSpinner } from "react-icons/fa6";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function CameraScan() {
 	const [stream, setStream] = useState(null);
@@ -64,20 +65,31 @@ export default function CameraScan() {
 				recordedBlob,
 				`recording-${Date.now()}.webm`
 			);
-
-			fetch("https://testscan.shoefitr.io/api/upload-video/", {
+			setLoading(true);
+			fetch("https://testscan.shoefitr.io/api/calculate-size/", {
 				method: "POST",
 				body: formData,
 			})
 				.then((response) => {
 					if (response.ok) {
-						console.log("Video uploaded successfully.");
+						toast.success("Video uploaded successfully!");
+						router.push("/result");
 					} else {
-						console.error("Failed to upload video.");
+						setLoading(false);
+						toast.error(
+							"Foot not detected. Ensure the entire foot is visible in the video",
+							{
+								duration: 4000,
+							}
+						);
 					}
 				})
 				.catch((error) => {
 					console.error("Error:", error);
+					setLoading(false);
+					toast.error("An error occurred while uploading.", {
+						duration: 4000,
+					});
 				});
 
 			chunks = [];
@@ -96,10 +108,6 @@ export default function CameraScan() {
 			mediaRecorder.stop();
 			setRecording(false);
 			clearInterval(progressInterval);
-			setLoading(true);
-			setTimeout(() => {
-				router.push("/result");
-			}, 2000); // Adjust the delay as needed
 		}, 5000);
 	};
 

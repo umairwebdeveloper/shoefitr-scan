@@ -3,6 +3,8 @@ import "./globals.css";
 import Head from "next/head";
 import { Poppins } from "next/font/google";
 import MobileOnlyContent from "../components/MobileOnlyContent";
+import { Toaster } from "react-hot-toast";
+
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -31,6 +33,7 @@ export default function RootLayout({ children }) {
 			</Head>
 			<body className={poppins.className}>
 				<MobileOnlyContent>
+					<Toaster />
 					<div>{children}</div>
 				</MobileOnlyContent>
 			</body>
