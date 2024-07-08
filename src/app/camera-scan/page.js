@@ -57,21 +57,28 @@ export default function CameraScan() {
 		};
 
 		mediaRecorder.onstop = () => {
-			const recordedBlob = new Blob(chunks, { type: "video/webm" });
+			const recordedBlob = new Blob(chunks, { type: "video/mp4" });
 
 			const formData = new FormData();
 			formData.append(
-				"video",
+				"file",
 				recordedBlob,
-				`recording-${Date.now()}.webm`
+				`recording-${Date.now()}.mp4`
 			);
 			setLoading(true);
-			fetch("https://testscan.shoefitr.io/api/calculate-size/", {
-				method: "POST",
-				body: formData,
-			})
+			fetch(
+				"https://3b29-119-73-112-229.ngrok-free.app/calculate-size/",
+				{
+					method: "POST",
+					body: formData,
+				}
+			)
 				.then((response) => {
 					if (response.ok) {
+						localStorage.setItem(
+							"resultData",
+							JSON.stringify(data)
+						);
 						toast.success("Video uploaded successfully!");
 						router.push("/result");
 					} else {

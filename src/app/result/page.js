@@ -1,11 +1,33 @@
-"use client"
+"use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
 export default function Result() {
+	const [resultData, setResultData] = useState(null);
+
 	const router = useRouter();
+
+	useEffect(() => {
+		const data = localStorage.getItem("resultData");
+		if (data) {
+			const parsedData = JSON.parse(data);
+			const formattedData = parsedData.map((value) => value.toFixed(1));
+			setResultData(formattedData);
+		}
+	}, []);
+
+	if (!resultData) {
+		return (
+			<div className="d-flex justify-content-center align-items-center vh-100">
+				<div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<main>
@@ -36,7 +58,9 @@ export default function Result() {
 				<div class="p-3">
 					<div class="shoefitr-result-box p-3 text-center mb-3">
 						<p class="m-0 p-0 text-uppercase">Correct size</p>
-						<span>42.5</span>
+						<span>
+							{resultData[0]}, {resultData[1]}
+						</span>
 					</div>
 					<div class="shoefitr-result-box2 p-3 text-center">
 						<p class="m-0 p-0 text-uppercase">
