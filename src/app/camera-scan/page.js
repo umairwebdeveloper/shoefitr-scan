@@ -57,22 +57,19 @@ export default function CameraScan() {
 		};
 
 		mediaRecorder.onstop = () => {
-			const recordedBlob = new Blob(chunks, { type: "video/mp4" });
+			const recordedBlob = new Blob(chunks, { type: "video/webm" });
 
 			const formData = new FormData();
 			formData.append(
-				"file",
+				"video",
 				recordedBlob,
-				`recording-${Date.now()}.mp4`
+				`recording-${Date.now()}.webm`
 			);
 			setLoading(true);
-			fetch(
-				"https://3b29-119-73-112-229.ngrok-free.app/calculate-size/",
-				{
-					method: "POST",
-					body: formData,
-				}
-			)
+			fetch("https://testscan.shoefitr.io/api/calculate-size/", {
+				method: "POST",
+				body: formData,
+			})
 				.then((response) => {
 					if (response.ok) {
 						localStorage.setItem(
