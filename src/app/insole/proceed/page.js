@@ -9,10 +9,10 @@ export default function Proceed() {
 	return (
 		<main>
 			<div>
-				<div class="p-3">
+				<div className="p-3">
 					<a
 						onClick={() => router.back()}
-						class="shoefitr-back-button d-flex align-items-center"
+						className="shoefitr-back-button d-flex align-items-center"
 					>
 						<span className="me-2">
 							<FaChevronLeft />
@@ -21,11 +21,11 @@ export default function Proceed() {
 					</a>
 				</div>
 				<div
-					class="p-4 d-flex flex-column justify-content-center align-items-center"
+					className="p-4 d-flex flex-column justify-content-center align-items-center"
 					style={{ height: "80vh" }}
 				>
-					<div class="shoefitr-proceed-box text-center w-100">
-						<div class="mb-2">
+					<div className="shoefitr-proceed-box text-center w-100">
+						<div className="mb-2">
 							<Image
 								src="/assets/svg/light-bulb.svg"
 								alt="light bulb"
@@ -37,12 +37,12 @@ export default function Proceed() {
 							Thank you! Now proceed <br />
 							to the bottom scanning
 						</h3>
-						<div class="pt-3">
+						<div className="pt-3">
 							<a
 								onClick={() =>
 									router.push("/insole/camera-scan-right")
 								}
-								class="shoefitr-primary-button d-flex align-items-center justify-content-center"
+								className="shoefitr-primary-button d-flex align-items-center justify-content-center"
 							>
 								Proceed
 							</a>

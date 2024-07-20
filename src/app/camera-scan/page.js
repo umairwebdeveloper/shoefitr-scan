@@ -1,118 +1,61 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { FaCamera, FaStop, FaSpinner } from "react-icons/fa6";
-import { FaChevronLeft } from "react-icons/fa6";
+import { useState, useRef } from "react";
+import Webcam from "react-webcam";
+import { FaCamera, FaSpinner, FaChevronLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 export default function CameraScan() {
-	const [stream, setStream] = useState(null);
-	const [recorder, setRecorder] = useState(null);
-	const [recording, setRecording] = useState(false);
-	const [progress, setProgress] = useState(0);
-	const [loading, setLoading] = useState(false);
-	const videoRef = useRef();
 	const router = useRouter();
+	const webcamRef = useRef(null);
+	const [loading, setLoading] = useState(false);
 
-	const isMobileDevice = () => {
-		return /Mobi|Android/i.test(navigator.userAgent);
-	};
+	const captureImage = () => {
+		const imageSrc = webcamRef.current.getScreenshot();
 
-	useEffect(() => {
-		const enableCamera = async () => {
-			try {
-				const mediaStream = await navigator.mediaDevices.getUserMedia({
-					video: {
-						facingMode: isMobileDevice()
-							? { exact: "environment" }
-							: "user",
-					},
-				});
-				setStream(mediaStream);
-				videoRef.current.srcObject = mediaStream;
-			} catch (error) {
-				console.error("Error accessing webcam:", error);
-			}
-		};
-
-		enableCamera();
-
-		return () => {
-			if (stream) {
-				stream.getTracks().forEach((track) => track.stop());
-			}
-		};
-	}, []);
-
-	const startRecording = () => {
-		if (!stream) return;
-
-		const mediaRecorder = new MediaRecorder(stream);
-		setRecorder(mediaRecorder);
-
-		let chunks = [];
-		mediaRecorder.ondataavailable = (event) => {
-			chunks.push(event.data);
-		};
-
-		mediaRecorder.onstop = () => {
-			const recordedBlob = new Blob(chunks, { type: "video/webm" });
-
-			const formData = new FormData();
-			formData.append(
-				"video",
-				recordedBlob,
-				`recording-${Date.now()}.webm`
-			);
+		if (imageSrc) {
 			setLoading(true);
-			fetch("https://testscan.shoefitr.io/api/calculate-size/", {
-				method: "POST",
-				body: formData,
-			})
-				.then((response) => {
-					if (response.ok) {
-						localStorage.setItem(
-							"resultData",
-							JSON.stringify(data)
-						);
-						toast.success("Video uploaded successfully!");
-						router.push("/result");
-					} else {
-						setLoading(false);
-						toast.error(
-							"Foot not detected. Ensure the entire foot is visible in the video",
+
+			// Convert base64 image to blob
+			fetch(imageSrc)
+				.then((res) => res.blob())
+				.then((blob) => {
+					const formData = new FormData();
+					formData.append("image", blob, "capture.jpg");
+
+					axios
+						.post(
+							"https://testscan.shoefitr.io/api/",
+							formData,
 							{
-								duration: 4000,
+								headers: {
+									"Content-Type": "multipart/form-data",
+								},
 							}
-						);
-					}
-				})
-				.catch((error) => {
-					console.error("Error:", error);
-					setLoading(false);
-					toast.error("An error occurred while uploading.", {
-						duration: 4000,
-					});
+						)
+						.then((response) => {
+							toast.success(response.data.message);
+							setLoading(false);
+							localStorage.setItem(
+								"responseData",
+								JSON.stringify(response.data)
+							);
+							router.push("/result");
+						})
+						.catch((error) => {
+							const errorMessage =
+								error.response?.data?.message ||
+								"An error occurred";
+							console.error("Error uploading image", error);
+							toast.error(errorMessage);
+							setLoading(false);
+						});
 				});
-
-			chunks = [];
-		};
-
-		mediaRecorder.start();
-		setRecording(true);
-		setProgress(0);
-
-		const progressInterval = setInterval(() => {
-			setProgress((prev) => prev + 1);
-		}, 1000);
-
-		// Stop recording after 5 seconds
-		setTimeout(() => {
-			mediaRecorder.stop();
-			setRecording(false);
-			clearInterval(progressInterval);
-		}, 5000);
+		} else {
+			toast.error("Failed to capture image.");
+		}
 	};
 
 	return (
@@ -128,17 +71,20 @@ export default function CameraScan() {
 					<FaChevronLeft />
 				</span>
 			</div>
-			<video
-				ref={videoRef}
+			<Webcam
+				audio={false}
+				ref={webcamRef}
+				screenshotFormat="image/jpeg"
+				videoConstraints={{ facingMode: "environment" }}
 				id="videoElement"
-				autoPlay
-				playsInline
-			></video>
-
+			/>
 			{loading ? (
 				<>
-					<div class="centered-icon">
-						<FaSpinner class="spin-icon text-light" />
+					<div className="centered-icon text-center">
+						<FaSpinner className="spin-icon text-light" />
+						<h3 className="text-light text-center shadow-sm mt-3">
+							Processing...
+						</h3>
 					</div>
 				</>
 			) : (
@@ -151,28 +97,14 @@ export default function CameraScan() {
 							alt="mask"
 						/>
 					</div>
-					<div>
-						{!recording ? (
-							<div
-								className="shoefitr-camera-button shadow-sm"
-								onClick={startRecording}
-							>
-								<FaCamera />
-							</div>
-						) : (
-							<div className="shoefitr-camera-button shadow-sm text-danger">
-								<FaStop />
-							</div>
-						)}
-					</div>
-					{recording && (
-						<div className="progress-bar-container bg-light shadow-sm">
-							<div
-								className="progress-bar bg-danger"
-								style={{ width: `${progress * 20}%` }}
-							></div>
+					<div className="text-center mt-3">
+						<div
+							className="shoefitr-camera-button shadow-sm"
+							onClick={captureImage}
+						>
+							<FaCamera />
 						</div>
-					)}
+					</div>
 				</>
 			)}
 		</main>

@@ -1,26 +1,51 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { FaCamera } from "react-icons/fa6";
-import { FaChevronLeft } from "react-icons/fa6";
+import { useState, useRef } from "react";
+import Webcam from "react-webcam";
+import { FaCamera, FaSpinner, FaChevronLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function CameraScan() {
 	const router = useRouter();
-	const videoRef = useRef(null);
+	const webcamRef = useRef(null);
+	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		if (navigator.mediaDevices.getUserMedia) {
-			navigator.mediaDevices
-				.getUserMedia({ video: true })
-				.then((stream) => {
-					videoRef.current.srcObject = stream;
-				})
-				.catch((error) => {
-					console.log("Something went wrong!", error);
+	const captureImage = () => {
+		const imageSrc = webcamRef.current.getScreenshot();
+
+		if (imageSrc) {
+			setLoading(true);
+
+			// Convert base64 image to blob
+			fetch(imageSrc)
+				.then((res) => res.blob())
+				.then((blob) => {
+					const formData = new FormData();
+					formData.append("image", blob, "capture.jpg");
+
+					axios
+						.post("http://127.0.0.1:8000/api/", formData, {
+							headers: {
+								"Content-Type": "multipart/form-data",
+							},
+						})
+						.then(() => {
+							toast.success("Image uploaded successfully!");
+							setLoading(false);
+							// router.push("/insole/proceed");
+						})
+						.catch((error) => {
+							console.error("Error uploading image", error);
+							toast.error("Failed to upload image.");
+							setLoading(false);
+						});
 				});
+		} else {
+			toast.error("Failed to capture image.");
 		}
-	}, []);
+	};
 
 	return (
 		<main>
@@ -35,23 +60,42 @@ export default function CameraScan() {
 					<FaChevronLeft />
 				</span>
 			</div>
-			<video ref={videoRef} id="videoElement" autoPlay></video>
-			<div className="centered-icon">
-				<img
-					src="/assets/png/mask.png"
-					className="img-fluid"
-					width="200"
-					alt="mask"
-				/>
-			</div>
-			<div>
-				<div
-					className="shoefitr-camera-button shadow-sm"
-					onClick={() => router.push("/insole/proceed")}
-				>
-					<FaCamera />
-				</div>
-			</div>
+			<Webcam
+				audio={false}
+				ref={webcamRef}
+				screenshotFormat="image/jpeg"
+				videoConstraints={{ facingMode: "environment" }}
+				id="videoElement"
+			/>
+			{loading ? (
+				<>
+					<div className="centered-icon text-center">
+						<FaSpinner className="spin-icon text-light" />
+						<h3 className="text-light text-center shadow-sm mt-3">
+							Processing...
+						</h3>
+					</div>
+				</>
+			) : (
+				<>
+					<div className="centered-icon">
+						<img
+							src="/assets/png/mask.png"
+							className="img-fluid"
+							width="200"
+							alt="mask"
+						/>
+					</div>
+					<div className="text-center mt-3">
+						<div
+							className="shoefitr-camera-button shadow-sm"
+							onClick={captureImage}
+						>
+							<FaCamera />
+						</div>
+					</div>
+				</>
+			)}
 		</main>
 	);
 }

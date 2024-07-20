@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { FaChevronLeft } from "react-icons/fa6";
-import { FaSpinner} from "react-icons/fa6";
+import { FaSpinner } from "react-icons/fa6";
 
 export default function CameraLoader() {
 	const videoRef = useRef(null);
@@ -33,8 +33,8 @@ export default function CameraLoader() {
 				</span>
 			</div>
 			<video ref={videoRef} id="videoElement" autoPlay></video>
-			<div class="centered-icon">
-				<FaSpinner class="spin-icon text-light" />
+			<div className="centered-icon">
+				<FaSpinner className="spin-icon text-light" />
 			</div>
 		</main>
 	);
