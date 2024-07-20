@@ -82,6 +82,56 @@ export default function Result() {
 						Results: Correct size found!
 					</h3>
 				</div>
+				<div className="card m-3">
+					<div className="card-body">
+						<h2 className="card-title bg-light p-3 rounded text-center mb-3">
+							Foot Lengths
+						</h2>
+						<div className="row">
+							<div className="col-md-6 mb-3">
+								<h3>Left Foot</h3>
+								<ul className="list-group">
+									<li className="list-group-item">
+										Length: {data.length_foot.length_l}
+									</li>
+									<li className="list-group-item">
+										Ball: {data.length_foot.ball_l}
+									</li>
+									<li className="list-group-item">
+										Waist: {data.length_foot.waist_l}
+									</li>
+									<li className="list-group-item">
+										Instep: {data.length_foot.instep_l}
+									</li>
+								</ul>
+							</div>
+							<div className="col-md-6">
+								<h3>Right Foot</h3>
+								<ul className="list-group">
+									<li className="list-group-item">
+										Length: {data.length_foot.length_r}
+									</li>
+									<li className="list-group-item">
+										Ball: {data.length_foot.ball_r}
+									</li>
+									<li className="list-group-item">
+										Waist: {data.length_foot.waist_r}
+									</li>
+									<li className="list-group-item">
+										Instep: {data.length_foot.instep_r}
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div className="text-center my-3">
+							<img
+								src={data.Image_url}
+								className="img-fluid w-100"
+								alt="result image"
+							/>
+						</div>
+					</div>
+				</div>
 				<div className="p-3">
 					<div className="shoefitr-result-box p-3 text-center mb-3">
 						<p className="m-0 p-0 text-uppercase">Correct size</p>
