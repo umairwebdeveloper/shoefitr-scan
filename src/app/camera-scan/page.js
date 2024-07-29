@@ -40,11 +40,15 @@ export default function CameraScan() {
 					formData.append("picture", blob, "capture.jpg");
 
 					axios
-						.post("http://127.0.0.1:8000/calculation/", formData, {
-							headers: {
-								"Content-Type": "multipart/form-data",
-							},
-						})
+						.post(
+							"https://testscan.shoefitr.io/api/calculation/",
+							formData,
+							{
+								headers: {
+									"Content-Type": "multipart/form-data",
+								},
+							}
+						)
 						.then((response) => {
 							toast.success(response.data.message);
 							setLoading(false);
