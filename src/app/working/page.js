@@ -78,7 +78,11 @@ export default function Working() {
 				<div className="px-3 pt-4">
 					<div className="d-flex justify-content-center">
 						<button
-							onClick={() => router.push("/camera-scan")}
+							onClick={() =>
+								router.push(
+									"/select-size?shopid=dis&userid=1&modelname=adf"
+								)
+							}
 							className="shoefitr-primary-button w-100"
 						>
 							Proceed to Scanning

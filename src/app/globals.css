@@ -30,10 +30,14 @@
 	border-radius: 30px;
 	font-weight: 400;
 	font-size: 15px;
-	cursor: pointer;
 	text-decoration: none;
 	border: none;
 }
+
+.shoefitr-primary-button:disabled {
+	background-color: #20232d80;
+}
+
 
 .shoefitr-secondary-button {
 	background-color: transparent;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Webcam from "react-webcam";
 import { FaCamera, FaSpinner, FaChevronLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,15 @@ import toast from "react-hot-toast";
 export default function CameraScan() {
 	const router = useRouter();
 	const webcamRef = useRef(null);
+	const [shoeSizeData, setShoeSizeData] = useState(null);
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const data = localStorage.getItem("shoeSizeData");
+		if (data) {
+			setShoeSizeData(JSON.parse(data));
+		}
+	}, []);
 
 	const captureImage = () => {
 		const imageSrc = webcamRef.current.getScreenshot();
@@ -23,18 +31,20 @@ export default function CameraScan() {
 				.then((res) => res.blob())
 				.then((blob) => {
 					const formData = new FormData();
-					formData.append("image", blob, "capture.jpg");
+					formData.append("shopid", shoeSizeData.shopid);
+					formData.append("userid", shoeSizeData.userid);
+					formData.append("model_name", shoeSizeData.model_name);
+					formData.append("size", shoeSizeData.selectedSize);
+					formData.append("selection", shoeSizeData.selectedAgeGroup);
+					formData.append("system", shoeSizeData.selectedSystem);
+					formData.append("picture", blob, "capture.jpg");
 
 					axios
-						.post(
-							"https://testscan.shoefitr.io/api/",
-							formData,
-							{
-								headers: {
-									"Content-Type": "multipart/form-data",
-								},
-							}
-						)
+						.post("http://127.0.0.1:8000/calculation/", formData, {
+							headers: {
+								"Content-Type": "multipart/form-data",
+							},
+						})
 						.then((response) => {
 							toast.success(response.data.message);
 							setLoading(false);
@@ -57,6 +67,16 @@ export default function CameraScan() {
 			toast.error("Failed to capture image.");
 		}
 	};
+
+	if (!shoeSizeData) {
+		return (
+			<div className="container mt-3">
+				<div className="alert alert-danger" role="alert">
+					Shoe size data not found. Please select size again.
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<main>

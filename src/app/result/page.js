@@ -7,54 +7,25 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function Result() {
-	const [data, setData] = useState(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
 	const router = useRouter();
+	const [resultData, setResultData] = useState(null);
 
 	useEffect(() => {
-		const fetchData = () => {
-			try {
-				const responseData = localStorage.getItem("responseData");
-				if (responseData) {
-					const parsedData = JSON.parse(responseData);
-					if (parsedData.length_foot) {
-						setData(parsedData);
-					} else {
-						setError("Invalid data format");
-					}
-				} else {
-					setError("No data available");
-				}
-			} catch (e) {
-				setError("Error retrieving data");
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchData();
+		const data = localStorage.getItem("resultData");
+		if (data) {
+			setResultData(JSON.parse(data));
+		}
 	}, []);
 
-	if (loading) {
-		return (
-			<div className="text-center mt-5">
-				<div className="spinner-border" role="status">
-					<span className="visually-hidden">Loading...</span>
-				</div>
-			</div>
-		);
-	}
-
-	if (error) {
-		toast.error(error);
-		router.push("/camera-scan");
-	}
-
-	if (!data) {
-		toast.error("No data available");
-		router.push("/camera-scan");
-	}
+	// if (!resultData) {
+	// 	return (
+	// 		<div className="container mt-3">
+	// 			<div className="alert alert-danger" role="alert">
+	// 				No data found. Please go back and try again.
+	// 			</div>
+	// 		</div>
+	// 	);
+	// }
 
 	return (
 		<main>
@@ -79,10 +50,10 @@ export default function Result() {
 						alt="light bulb"
 					/>
 					<h3 className="shoefitr-secondary-heading">
-						Results: Correct size found!
+						Results: {resultData?.message || "-"}
 					</h3>
 				</div>
-				<div className="card m-3">
+				<div className="m-3">
 					<div className="card-body">
 						<h2 className="card-title bg-light p-3 rounded text-center mb-3">
 							Foot Lengths
@@ -91,54 +62,73 @@ export default function Result() {
 							<div className="col-md-6 mb-3">
 								<h3>Left Foot</h3>
 								<ul className="list-group">
-									<li className="list-group-item">
-										Length: {data.length_foot.length_l}
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										Length:{" "}
+										<span>
+											{resultData?.length_l || "-"}
+										</span>
 									</li>
-									<li className="list-group-item">
-										Ball: {data.length_foot.ball_l}
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										Ball:{" "}
+										<span>{resultData?.ball_l || "-"}</span>
 									</li>
-									<li className="list-group-item">
-										Waist: {data.length_foot.waist_l}
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										Waist:{" "}
+										<span>
+											{resultData?.waist_l || "-"}
+										</span>
 									</li>
-									<li className="list-group-item">
-										Instep: {data.length_foot.instep_l}
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										Instep:{" "}
+										<span>
+											{resultData?.instep_l || "-"}
+										</span>
 									</li>
 								</ul>
 							</div>
-							<div className="col-md-6">
+							<div className="col-md-6 mb-3">
 								<h3>Right Foot</h3>
 								<ul className="list-group">
-									<li className="list-group-item">
-										Length: {data.length_foot.length_r}
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										Length:{" "}
+										<span>
+											{resultData?.length_r || "-"}
+										</span>
 									</li>
-									<li className="list-group-item">
-										Ball: {data.length_foot.ball_r}
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										Ball:{" "}
+										<span>{resultData?.ball_r || "-"}</span>
 									</li>
-									<li className="list-group-item">
-										Waist: {data.length_foot.waist_r}
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										Waist:{" "}
+										<span>
+											{resultData?.waist_r || "-"}
+										</span>
 									</li>
-									<li className="list-group-item">
-										Instep: {data.length_foot.instep_r}
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										Instep:{" "}
+										<span>
+											{resultData?.instep_r || "-"}
+										</span>
 									</li>
 								</ul>
 							</div>
-						</div>
-						<div className="text-center my-3">
-							<img
-								src={data.Image_url}
-								className="img-fluid w-100"
-								alt="result image"
-							/>
+							<div className="col-md-6 py-3">
+								<img
+									src={
+										resultData?.uri ||
+										"https://static.vecteezy.com/system/resources/previews/009/796/801/non_2x/footprint-icon-on-white-background-flat-style-feet-prints-icon-for-your-web-site-design-logo-app-ui-foot-symbol-feet-sign-human-footprint-track-vector.jpg"
+									}
+									className="img-fluid"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div className="p-3">
 					<div className="shoefitr-result-box p-3 text-center mb-3">
 						<p className="m-0 p-0 text-uppercase">Correct size</p>
-						<span>
-							{data.length_foot.length_l},{" "}
-							{data.length_foot.length_r}
-						</span>
+						<span>{resultData?.size || "-"}</span>
 					</div>
 					<div className="shoefitr-result-box2 p-3 text-center">
 						<p className="m-0 p-0 text-uppercase">
