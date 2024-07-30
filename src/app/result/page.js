@@ -11,21 +11,21 @@ export default function Result() {
 	const [resultData, setResultData] = useState(null);
 
 	useEffect(() => {
-		const data = localStorage.getItem("resultData");
+		const data = localStorage.getItem("responseData");
 		if (data) {
 			setResultData(JSON.parse(data));
 		}
 	}, []);
 
-	// if (!resultData) {
-	// 	return (
-	// 		<div className="container mt-3">
-	// 			<div className="alert alert-danger" role="alert">
-	// 				No data found. Please go back and try again.
-	// 			</div>
-	// 		</div>
-	// 	);
-	// }
+	if (!resultData) {
+		return (
+			<div className="container mt-3">
+				<div className="alert alert-danger" role="alert">
+					No data found. Please go back and try again.
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<main>
