@@ -29,6 +29,15 @@ export default function Result() {
 		);
 	}
 
+	const handleCopy = async (textToCopy) => {
+		try {
+			await navigator.clipboard.writeText(textToCopy);
+			toast.success("Copied to clipboard!");
+		} catch (err) {
+			toast.error("Failed to copy to clipboard.");
+		}
+	};
+
 	return (
 		<main>
 			<div>
@@ -144,6 +153,12 @@ export default function Result() {
 								<Image
 									src="/assets/svg/copy.svg"
 									className="ms-2"
+									style={{ cursor: "pointer" }}
+									onClick={() =>
+										handleCopy(
+											`${resultData?.correct_size || "-"}`
+										)
+									}
 									width={40}
 									height={40}
 									alt="copy"
