@@ -9,7 +9,7 @@ import { systemsData, sizeData } from "../../../utils/sizes";
 import { FaCamera } from "react-icons/fa6";
 import Image from "next/image";
 
-const ShoeSizeSelector = () => {
+const ShoeSizeSelectorTest = () => {
 	const router = useRouter();
 	const [selectedSystem, setSelectedSystem] = useState(null);
 	const [selectedAgeGroup, setSelectedAgeGroup] = useState("");
@@ -146,7 +146,7 @@ const ShoeSizeSelector = () => {
 				<div className="">
 					<div className="mb-3">
 						<label className="form-label">
-							Tell us size which you bought last:
+							Select Size System:
 						</label>
 						<Select
 							options={systemsData}
@@ -284,4 +284,4 @@ const ShoeSizeSelector = () => {
 	);
 };
 
-export default ShoeSizeSelector;
+export default ShoeSizeSelectorTest;
