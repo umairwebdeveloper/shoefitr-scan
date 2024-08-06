@@ -3,10 +3,13 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import useQueryString from "../../hooks/useQueryString";
+import useMatchUserIdShopOwner from "../../hooks/useMatchUserIdShopOwner";
+import Spinner from "../../components/Spinner";
 
 export default function Home() {
 	const router = useRouter();
 	const queryString = useQueryString();
+	const { match, loading } = useMatchUserIdShopOwner();
 
 	return (
 		<main>
@@ -72,7 +75,31 @@ export default function Home() {
 						and shoe fitting together
 					</p>
 				</div>
-				<div className="px-3">
+				{loading ? (
+					<>
+						<Spinner
+							size="md"
+							color="dark"
+							position="center"
+							className="mb-3"
+						/>
+					</>
+				) : (
+					<>
+						{match.match === true ? (
+							<p className="text-center text-success mb-3">
+								Wellcome Back, {match.username}!
+							</p>
+						) : (
+							<>
+								<p className="text-center text-success mb-3">
+									Wellcome
+								</p>
+							</>
+						)}
+					</>
+				)}
+				<div className="px-3 mt-2">
 					<div className="d-flex justify-content-center">
 						<button
 							onClick={() =>

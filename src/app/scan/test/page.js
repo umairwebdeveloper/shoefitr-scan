@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useQueryParams } from "../../../hooks/useQueryParams";
-import useQueryString from "../../../hooks/useQueryString";
+import { useRouter, useSearchParams } from "next/navigation";
 import Select from "react-select";
 import { systemsData, sizeData } from "../../../utils/sizes";
-import { FaCamera } from "react-icons/fa6";
+import { FaCamera, FaPaperPlane } from "react-icons/fa6";
 import Image from "next/image";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ShoeSizeSelectorTest = () => {
 	const router = useRouter();
@@ -15,18 +15,26 @@ const ShoeSizeSelectorTest = () => {
 	const [selectedAgeGroup, setSelectedAgeGroup] = useState("");
 	const [selectedGender, setSelectedGender] = useState("");
 	const [selectedSize, setSelectedSize] = useState("");
+	const [shopId, setShopId] = useState("");
+	const [userId, setUserId] = useState("");
+	const [modelName, setModelName] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [image, setImage] = useState(null);
+	const [response, setResponse] = useState(null);
+	const [responseError, setResponseError] = useState(null);
 
-	const params = useQueryParams();
-	const queryString = useQueryString();
-	const { shopid, userid, modelname } = params;
+	const { shopid, userid, modelname } = Object.fromEntries(useSearchParams());
 
 	useEffect(() => {
 		const defaultSystem = systemsData.find(
 			(system) => system.value === "EU"
 		);
 		setSelectedSystem(defaultSystem);
-	}, []);
+
+		if (shopid) setShopId(shopid);
+		if (userid) setUserId(userid);
+		if (modelname) setModelName(modelname);
+	}, [shopid, userid, modelname]);
 
 	const handleSystemChange = (selectedOption) => {
 		setSelectedSystem(selectedOption);
@@ -50,21 +58,47 @@ const ShoeSizeSelectorTest = () => {
 		setSelectedSize(selectedOption);
 	};
 
-	const handleScanNow = () => {
-		const selectedData = {
-			shopid,
-			userid,
-			modelname,
-			selectedSystem: selectedSystem.value,
-			selectedAgeGroup,
-			selectedGender,
-			selectedSize: selectedSize.value,
-		};
+	const handleImageChange = (e) => {
+		setImage(e.target.files[0]);
+	};
+
+	const handleScanTest = async () => {
+		const formData = new FormData();
+		formData.append("shopid", shopId);
+		formData.append("userid", userId);
+		formData.append("model_name", modelName);
+		formData.append("system", selectedSystem.value);
+		formData.append("selection", selectedAgeGroup);
+		formData.append("selectedGender", selectedGender);
+		formData.append("size", selectedSize.value);
+		if (image) {
+			formData.append("picture", image);
+		}
+
 		setLoading(true);
-		localStorage.setItem("shoeSizeData", JSON.stringify(selectedData));
-		setTimeout(() => {
-			router.push(`/scan/camera-scan?${queryString}`);
-		}, 1000);
+
+		try {
+			const response = await axios.post(
+				"https://testscan.shoefitr.io/api/calculation/",
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
+			setResponse(response.data);
+			toast.success("Request sent successfully.");
+			window.scrollTo(0, document.body.scrollHeight);
+		} catch (error) {
+			console.error("Error:", error);
+			toast.error("An error occurred while sending the request.");
+			setResponseError(
+				"An error occurred while sending the request. Please try again."
+			);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const getAvailableSizes = () => {
@@ -103,47 +137,38 @@ const ShoeSizeSelectorTest = () => {
 				/>
 			</div>
 			<div className="container my-3">
-				<div className="p-3 d-flex flex-column justify-content-center align-items-center">
-					<div className="position-relative">
-						<div className="mb-4">
-							<a href="#">
-								<Image
-									src="/assets/svg/scan-button.svg"
-									className="img-fluid"
-									alt="scanning-button"
-									width={184}
-									height={184}
-								/>
-							</a>
-						</div>
-						<div>
-							<Image
-								src="/assets/png/Frame.png"
-								className="img-fluid shoefitr-image-border"
-								alt="scanning-button"
-								width={184}
-								height={184}
-							/>
-						</div>
-						<Image
-							src="/assets/svg/side1.svg"
-							className="img-fluid position-absolute"
-							alt="side"
-							width={50}
-							height={50}
-							style={{ top: "30px", right: "185px" }}
-						/>
-						<Image
-							src="/assets/svg/side2.svg"
-							className="img-fluid position-absolute"
-							alt="side"
-							width={50}
-							height={50}
-							style={{ top: "30px", left: "185px" }}
+				<h3 className="fs-3 fw-bold text-center mb-3">Test Scan</h3>
+				<div className="">
+					<div className="mb-3">
+						<label className="form-label">Shop Id:</label>
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Enter shop id"
+							value={shopId}
+							onChange={(e) => setShopId(e.target.value)}
 						/>
 					</div>
-				</div>
-				<div className="">
+					<div className="mb-3">
+						<label className="form-label">User Id:</label>
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Enter user id"
+							value={userId}
+							onChange={(e) => setUserId(e.target.value)}
+						/>
+					</div>
+					<div className="mb-3">
+						<label className="form-label">Model Name:</label>
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Enter model name"
+							value={modelName}
+							onChange={(e) => setModelName(e.target.value)}
+						/>
+					</div>
 					<div className="mb-3">
 						<label className="form-label">
 							Select Size System:
@@ -231,40 +256,19 @@ const ShoeSizeSelectorTest = () => {
 						/>
 					</div>
 					<div className="mb-3">
-						<ul className="list-group">
-							<li className="list-group-item d-flex justify-content-between align-items-center">
-								System:
-								<span>
-									{selectedSystem
-										? selectedSystem.label
-										: "-"}
-								</span>
-							</li>
-							<li className="list-group-item d-flex justify-content-between align-items-center">
-								Age Group:
-								<span>
-									{selectedAgeGroup ? selectedAgeGroup : "-"}
-								</span>
-							</li>
-							{selectedGender && (
-								<li className="list-group-item d-flex justify-content-between align-items-center">
-									Gender:
-									<span>{selectedGender}</span>
-								</li>
-							)}
-							<li className="list-group-item d-flex justify-content-between align-items-center">
-								Size:
-								<span>
-									{selectedSize ? selectedSize.label : "-"}
-								</span>
-							</li>
-						</ul>
+						<label className="form-label">Upload Image:</label>
+						<input
+							type="file"
+							className="form-control"
+							accept="image/*"
+							onChange={handleImageChange}
+						/>
 					</div>
 					<div className="">
 						<button
 							className="shoefitr-primary-button d-flex justify-content-center align-items-center gap-2 w-100"
 							disabled={isButtonDisabled || loading}
-							onClick={handleScanNow}
+							onClick={handleScanTest}
 						>
 							{loading ? (
 								<span
@@ -273,11 +277,42 @@ const ShoeSizeSelectorTest = () => {
 									aria-hidden="true"
 								></span>
 							) : (
-								<FaCamera />
+								<FaPaperPlane />
 							)}
-							{loading ? "Loading..." : "Scan Now"}
+							{loading ? "Sending..." : "Send"}
 						</button>
 					</div>
+					{responseError && (
+						<div className="alert alert-danger my-4">{error}</div>
+					)}
+					{response && (
+						<div className="my-4">
+							<h4 className="fs-4 fw-bold mb-3">Response:</h4>
+							<ul className="list-group">
+								<li className="list-group-item">
+									{Object.keys(response).map((key) => (
+										<p>
+											<strong>
+												{key
+													.replace(/_/g, " ")
+													.toUpperCase()}
+												:
+											</strong>{" "}
+											{key === "uri" ? (
+												<img
+													src={response[key]}
+													alt="Image"
+													className="img-fluid w-100"
+												/>
+											) : (
+												response[key].toString()
+											)}
+										</p>
+									))}
+								</li>
+							</ul>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
