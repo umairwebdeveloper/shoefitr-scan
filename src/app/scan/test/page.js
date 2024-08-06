@@ -291,7 +291,7 @@ const ShoeSizeSelectorTest = () => {
 							<ul className="list-group">
 								<li className="list-group-item">
 									{Object.keys(response).map((key) => (
-										<p>
+										<p key={key}>
 											<strong>
 												{key
 													.replace(/_/g, " ")
