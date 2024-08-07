@@ -1,40 +1,84 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import Select from "react-select";
 import { systemsData, sizeData } from "../../../utils/sizes";
-import { FaCamera, FaPaperPlane } from "react-icons/fa6";
+import { FaPaperPlane } from "react-icons/fa6";
 import Image from "next/image";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const ShoeSizeSelectorTest = () => {
-	const router = useRouter();
 	const [selectedSystem, setSelectedSystem] = useState(null);
 	const [selectedAgeGroup, setSelectedAgeGroup] = useState("");
 	const [selectedGender, setSelectedGender] = useState("");
 	const [selectedSize, setSelectedSize] = useState("");
-	const [shopId, setShopId] = useState("");
-	const [userId, setUserId] = useState("");
-	const [modelName, setModelName] = useState("");
+	const [userId, setUserId] = useState("1");
 	const [loading, setLoading] = useState(false);
 	const [image, setImage] = useState(null);
 	const [response, setResponse] = useState(null);
 	const [responseError, setResponseError] = useState(null);
+	const [shopIds, setShopIds] = useState([]);
+	const [modelNames, setModelNames] = useState([]);
+	const [selectedShopId, setSelectedShopId] = useState(null);
+	const [selectedModelName, setSelectedModelName] = useState(null);
+	const [loadingShopIds, setLoadingShopIds] = useState(true);
+	const [loadingModelNames, setLoadingModelNames] = useState(false);
 
-	const { shopid, userid, modelname } = Object.fromEntries(useSearchParams());
+	useEffect(() => {
+		axios
+			.get("https://testscan.shoefitr.io/api/shop/ids/")
+			.then((response) => {
+				const shopOptions = response.data.map((username) => ({
+					value: username,
+					label: username,
+				}));
+				setShopIds(shopOptions);
+				setLoadingShopIds(false);
+			})
+			.catch((error) => {
+				toast.error("Error fetching shop IDs.");
+				setLoadingShopIds(false);
+			});
+	}, []);
 
 	useEffect(() => {
 		const defaultSystem = systemsData.find(
 			(system) => system.value === "EU"
 		);
 		setSelectedSystem(defaultSystem);
+	}, []);
 
-		if (shopid) setShopId(shopid);
-		if (userid) setUserId(userid);
-		if (modelname) setModelName(modelname);
-	}, [shopid, userid, modelname]);
+	const handleShopChange = (selectedOption) => {
+		setSelectedShopId(selectedOption);
+		if (selectedOption) {
+			setLoadingModelNames(true);
+			// Fetch model names for the selected shop ID
+			axios
+				.get(
+					`https://testscan.shoefitr.io/api/shop/model-names/${selectedOption.value}/`
+				)
+				.then((response) => {
+					setModelNames(
+						response.data.model_names.map((name) => ({
+							value: name,
+							label: name,
+						}))
+					);
+					setLoadingModelNames(false);
+				})
+				.catch((error) => {
+					toast.error("Error fetching model names.");
+					setLoadingModelNames(false);
+				});
+		} else {
+			setModelNames([]);
+		}
+	};
+
+	const handleModelChange = (selectedOption) => {
+		setSelectedModelName(selectedOption);
+	};
 
 	const handleSystemChange = (selectedOption) => {
 		setSelectedSystem(selectedOption);
@@ -64,9 +108,9 @@ const ShoeSizeSelectorTest = () => {
 
 	const handleScanTest = async () => {
 		if (
-			!shopId ||
 			!userId ||
-			!modelName ||
+			!selectedShopId ||
+			!selectedModelName ||
 			!selectedSystem ||
 			!selectedAgeGroup ||
 			!selectedSize ||
@@ -77,9 +121,9 @@ const ShoeSizeSelectorTest = () => {
 		}
 
 		const formData = new FormData();
-		formData.append("shopid", shopId);
+		formData.append("shopid", selectedShopId.value);
 		formData.append("userid", userId);
-		formData.append("model_name", modelName);
+		formData.append("model_name", selectedModelName.value);
 		formData.append("test_scan", "true");
 		formData.append("system", selectedSystem.value);
 		formData.append("selection", selectedAgeGroup);
@@ -150,19 +194,10 @@ const ShoeSizeSelectorTest = () => {
 					className="img-fluid"
 				/>
 			</div>
+
 			<div className="container my-3">
 				<h3 className="fs-3 fw-bold text-center mb-3">Test Scan</h3>
 				<div className="">
-					<div className="mb-3">
-						<label className="form-label">Shop Id:</label>
-						<input
-							type="text"
-							className="form-control"
-							placeholder="Enter shop id"
-							value={shopId}
-							onChange={(e) => setShopId(e.target.value)}
-						/>
-					</div>
 					<div className="mb-3">
 						<label className="form-label">User Id:</label>
 						<input
@@ -174,13 +209,28 @@ const ShoeSizeSelectorTest = () => {
 						/>
 					</div>
 					<div className="mb-3">
-						<label className="form-label">Model Name:</label>
-						<input
-							type="text"
-							className="form-control"
-							placeholder="Enter model name"
-							value={modelName}
-							onChange={(e) => setModelName(e.target.value)}
+						<label htmlFor="shop-select">Select Shop ID:</label>
+						<Select
+							id="shop-select"
+							options={shopIds}
+							onChange={handleShopChange}
+							placeholder="Select a shop ID..."
+							isLoading={loadingShopIds}
+						/>
+					</div>
+					<div className="mb-3">
+						<label htmlFor="model-select">Select Model Name:</label>
+						<Select
+							id="model-select"
+							options={modelNames}
+							onChange={handleModelChange}
+							placeholder={
+								selectedShopId
+									? "Select a model name..."
+									: "Select a shop ID first"
+							}
+							isDisabled={!selectedShopId}
+							isLoading={loadingModelNames}
 						/>
 					</div>
 					<div className="mb-3">

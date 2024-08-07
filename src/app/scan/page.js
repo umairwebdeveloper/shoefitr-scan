@@ -108,19 +108,20 @@ export default function Home() {
 							{match.match === true ? (
 								<>
 									<p className="text-center text-success mb-3">
-										Wellcome Back!
+										Welcome back! <br />
+										Your previous size
 									</p>
 									{match.reference && (
 										<>
 											<ul className="list-group mb-3">
 												<li className="list-group-item d-flex justify-content-between align-items-center">
-													Old Region:
+													Size System:
 													<span>
 														{match.reference.region}
 													</span>
 												</li>
 												<li className="list-group-item d-flex justify-content-between align-items-center">
-													Old Age Group:
+													Age Group:
 													<span>
 														{
 															match.reference
@@ -129,7 +130,7 @@ export default function Home() {
 													</span>
 												</li>
 												<li className="list-group-item d-flex justify-content-between align-items-center">
-													Old Size:
+													Size:
 													<span>
 														{match.reference.size}
 													</span>
@@ -142,7 +143,7 @@ export default function Home() {
 											>
 												{buttonLoading
 													? "Loading..."
-													: "Scan with old size"}
+													: "Scan with previous size"}
 											</button>
 											<p className="text-center fs-6 my-1">
 												or
@@ -160,7 +161,7 @@ export default function Home() {
 										Scan with new size
 									</button>
 									<p className="text-center shoefitr-primary-desc mb-4">
-										how it works?{" "}
+										how it&#x27;s works?{" "}
 										<a
 											onClick={() =>
 												router.push(
@@ -176,7 +177,7 @@ export default function Home() {
 							) : (
 								<>
 									<p className="text-center text-success mb-3">
-										Wellcome
+										Welcome
 									</p>
 									<button
 										onClick={() =>
@@ -186,7 +187,7 @@ export default function Home() {
 										}
 										className="shoefitr-primary-button w-100 mb-4"
 									>
-										See how it working
+										See how it&#x27;s working
 									</button>
 								</>
 							)}

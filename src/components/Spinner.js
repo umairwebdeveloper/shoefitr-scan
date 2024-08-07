@@ -2,7 +2,7 @@ import React from "react";
 
 const Spinner = ({
 	size = "md",
-	color = "primary",
+	color = "dark",
 	position = "center",
 	className = "",
 }) => {
