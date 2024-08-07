@@ -35,7 +35,7 @@ export default function CameraScan() {
 					const formData = new FormData();
 					formData.append("shopid", shoeSizeData.shopid);
 					formData.append("userid", shoeSizeData.userid);
-					formData.append("model_name", shoeSizeData.model_name);
+					formData.append("model_name", shoeSizeData.modelname);
 					formData.append("size", shoeSizeData.selectedSize);
 					formData.append("selection", shoeSizeData.selectedAgeGroup);
 					formData.append("system", shoeSizeData.selectedSystem);

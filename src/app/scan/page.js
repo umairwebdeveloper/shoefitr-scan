@@ -19,7 +19,7 @@ export default function Home() {
 			shopid,
 			userid,
 			modelname,
-			selectedSystem: match.reference.system,
+			selectedSystem: match.reference.region,
 			selectedAgeGroup: match.reference.selection,
 			selectedSize: match.reference.size,
 		};
