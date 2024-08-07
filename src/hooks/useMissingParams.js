@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 
 export const useMissingParams = (customMissingParams = []) => {
@@ -9,11 +9,12 @@ export const useMissingParams = (customMissingParams = []) => {
 	const [missingParams, setMissingParams] = useState(false);
 	const [loading, setLoading] = useState(true);
 
-	// Default params
-	const defaultParams =
-		pathname === "/scan/test" ? [] : ["shopid", "userid", "modelname"];
-	// Combine default params with custom missing params
-	const allParams = [...new Set([...defaultParams, ...customMissingParams])];
+	// Memoize allParams to prevent changes on every render
+	const allParams = useMemo(() => {
+		const defaultParams =
+			pathname === "/scan/test" ? [] : ["shopid", "userid", "modelname"];
+		return [...new Set([...defaultParams, ...customMissingParams])];
+	}, [pathname, customMissingParams]);
 
 	useEffect(() => {
 		const areParamsMissing = allParams.some(
