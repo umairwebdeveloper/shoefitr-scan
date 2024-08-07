@@ -1,15 +1,32 @@
 "use client";
-
+import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import useQueryString from "../../hooks/useQueryString";
 import useMatchUserIdShopOwner from "../../hooks/useMatchUserIdShopOwner";
 import Spinner from "../../components/Spinner";
 
 export default function Home() {
+	const [buttonLoading, setButtonLoading] = useState(false);
 	const router = useRouter();
 	const queryString = useQueryString();
 	const { match, loading } = useMatchUserIdShopOwner();
+
+	const { shopid, userid, modelname } = Object.fromEntries(useSearchParams());
+
+	const handleScanNowOldSize = () => {
+		const selectedData = {
+			shopid,
+			userid,
+			modelname,
+			selectedSystem: match.reference.system,
+			selectedAgeGroup: match.reference.selection,
+			selectedSize: match.reference.size,
+		};
+		setButtonLoading(true);
+		localStorage.setItem("shoeSizeData", JSON.stringify(selectedData));
+		router.push(`/scan/camera-scan?${queryString}`);
+	};
 
 	return (
 		<main>
@@ -75,41 +92,106 @@ export default function Home() {
 						and shoe fitting together
 					</p>
 				</div>
-				{loading ? (
-					<>
-						<Spinner
-							size="md"
-							color="dark"
-							position="center"
-							className="mb-3"
-						/>
-					</>
-				) : (
-					<>
-						{match.match === true ? (
-							<p className="text-center text-success mb-3">
-								Wellcome Back, {match.username}!
-							</p>
-						) : (
-							<>
-								<p className="text-center text-success mb-3">
-									Wellcome
-								</p>
-							</>
-						)}
-					</>
-				)}
-				<div className="px-3 mt-2">
-					<div className="d-flex justify-content-center">
-						<button
-							onClick={() =>
-								router.push(`/scan/working?${queryString}`)
-							}
-							className="shoefitr-primary-button w-100"
-						>
-							See how it working
-						</button>
-					</div>
+
+				<div className="px-3">
+					{loading ? (
+						<>
+							<Spinner
+								size="md"
+								color="dark"
+								position="center"
+								className="mb-3"
+							/>
+						</>
+					) : (
+						<>
+							{match.match === true ? (
+								<>
+									<p className="text-center text-success mb-3">
+										Wellcome Back!
+									</p>
+									{match.reference && (
+										<>
+											<ul className="list-group mb-3">
+												<li className="list-group-item d-flex justify-content-between align-items-center">
+													Old Region:
+													<span>
+														{match.reference.region}
+													</span>
+												</li>
+												<li className="list-group-item d-flex justify-content-between align-items-center">
+													Old Age Group:
+													<span>
+														{
+															match.reference
+																.selection
+														}
+													</span>
+												</li>
+												<li className="list-group-item d-flex justify-content-between align-items-center">
+													Old Size:
+													<span>
+														{match.reference.size}
+													</span>
+												</li>
+											</ul>
+											<button
+												className="shoefitr-secondary-button w-100"
+												onClick={handleScanNowOldSize}
+												disabled={buttonLoading}
+											>
+												{buttonLoading
+													? "Loading..."
+													: "Scan with old size"}
+											</button>
+											<p className="text-center fs-6 my-1">
+												or
+											</p>
+										</>
+									)}
+									<button
+										onClick={() =>
+											router.push(
+												`/scan/select-size?${queryString}`
+											)
+										}
+										className="shoefitr-primary-button w-100 mb-3"
+									>
+										Scan with new size
+									</button>
+									<p className="text-center shoefitr-primary-desc mb-4">
+										how it works?{" "}
+										<a
+											onClick={() =>
+												router.push(
+													`/scan/working?${queryString}`
+												)
+											}
+											className="text-dark cursor-pointer"
+										>
+											Click here
+										</a>
+									</p>
+								</>
+							) : (
+								<>
+									<p className="text-center text-success mb-3">
+										Wellcome
+									</p>
+									<button
+										onClick={() =>
+											router.push(
+												`/scan/working?${queryString}`
+											)
+										}
+										className="shoefitr-primary-button w-100 mb-4"
+									>
+										See how it working
+									</button>
+								</>
+							)}
+						</>
+					)}
 				</div>
 			</div>
 		</main>

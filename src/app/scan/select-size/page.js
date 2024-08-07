@@ -62,9 +62,7 @@ const ShoeSizeSelector = () => {
 		};
 		setLoading(true);
 		localStorage.setItem("shoeSizeData", JSON.stringify(selectedData));
-		setTimeout(() => {
-			router.push(`/scan/camera-scan?${queryString}`);
-		}, 1000);
+		router.push(`/scan/camera-scan?${queryString}`);
 	};
 
 	const getAvailableSizes = () => {

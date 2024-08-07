@@ -38,7 +38,6 @@
 	background-color: #20232d80;
 }
 
-
 .shoefitr-secondary-button {
 	background-color: transparent;
 	color: #373644;
@@ -50,6 +49,12 @@
 	font-size: 15px;
 	cursor: pointer;
 	text-decoration: none;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.shoefitr-secondary-button:hover {
+	background-color: #20232d;
+	color: white;
 }
 
 .shoefitr-primary-desc {
@@ -290,4 +295,8 @@
 .progress-bar {
 	height: 100%;
 	transition: width 0.5s;
+}
+
+.cursor-pointer {
+	cursor: pointer;
 }

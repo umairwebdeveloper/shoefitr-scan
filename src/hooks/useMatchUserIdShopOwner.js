@@ -7,7 +7,6 @@ import axios from "axios";
 const useMatchUserIdShopOwner = () => {
 	const [match, setMatch] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
 
 	const { userid, shopid } = Object.fromEntries(useSearchParams());
 
@@ -23,9 +22,7 @@ const useMatchUserIdShopOwner = () => {
 				);
 				setMatch(response.data);
 			} catch (error) {
-				setError(
-					error.response ? error.response.data : "An error occurred"
-				);
+				setMatch(error.response.data);
 			} finally {
 				setLoading(false);
 			}
@@ -34,7 +31,7 @@ const useMatchUserIdShopOwner = () => {
 		fetchMatch();
 	}, [userid, shopid]);
 
-	return { match, loading, error };
+	return { match, loading };
 };
 
 export default useMatchUserIdShopOwner;

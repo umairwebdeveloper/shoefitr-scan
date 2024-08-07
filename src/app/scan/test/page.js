@@ -63,10 +63,24 @@ const ShoeSizeSelectorTest = () => {
 	};
 
 	const handleScanTest = async () => {
+		if (
+			!shopId ||
+			!userId ||
+			!modelName ||
+			!selectedSystem ||
+			!selectedAgeGroup ||
+			!selectedSize ||
+			!image
+		) {
+			toast.error("Please fill all the fields and upload an image.");
+			return;
+		}
+
 		const formData = new FormData();
 		formData.append("shopid", shopId);
 		formData.append("userid", userId);
 		formData.append("model_name", modelName);
+		formData.append("test_scan", "true");
 		formData.append("system", selectedSystem.value);
 		formData.append("selection", selectedAgeGroup);
 		formData.append("selectedGender", selectedGender);
