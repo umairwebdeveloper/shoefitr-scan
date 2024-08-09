@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import useQueryString from "../../../hooks/useQueryString";
+import useQueryString from "../../../../../hooks/useQueryString";
 import toast from "react-hot-toast";
 
 export default function Result() {
@@ -60,11 +60,9 @@ export default function Result() {
 						height={48}
 						alt="light bulb"
 					/>
-					<h3 className="shoefitr-secondary-heading">
-						Results (mm)
-					</h3>
+					<h3 className="shoefitr-secondary-heading">Results (mm)</h3>
 				</div>
-				<div className="my-3">
+				<div className="mx-3">
 					<div className="card-body">
 						<div className="row">
 							<div className="col-md-6 mb-3">
@@ -211,7 +209,9 @@ export default function Result() {
 					<div>
 						<button
 							onClick={() =>
-								router.push(`/scan/select-size?${queryString}`)
+								router.push(
+									`/scan/measurements/?${queryString}`
+								)
 							}
 							className="shoefitr-secondary-button w-100"
 						>

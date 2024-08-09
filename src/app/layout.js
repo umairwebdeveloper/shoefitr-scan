@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-	title: "Shoefitr",
+	title: "Shoefitr.io",
 	description: "Shoefitr is a shoe fitting app",
 };
 
@@ -29,11 +29,7 @@ export default function RootLayout({ children }) {
 					name="viewport"
 					content="width=device-width, initial-scale=1"
 				/>
-				<link
-					rel="icon"
-					type="image/png"
-					href="/assets/png/logo.png"
-				/>
+				<link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
 			</Head>
 			<body className={poppins.className}>
 				<MobileOnlyContent>
