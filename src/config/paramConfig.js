@@ -1,5 +1,6 @@
 export const pathParamConfig = {
 	"/scan/test": [],
+	"/insole/*": [],
 	"/scan/measurements/*": [],
 };
 

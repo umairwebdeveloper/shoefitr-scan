@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import { FaCamera, FaSpinner, FaChevronLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import useQueryString from "../../../hooks/useQueryString";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -11,6 +12,7 @@ export default function CameraScan() {
 	const router = useRouter();
 	const webcamRef = useRef(null);
 	const [loading, setLoading] = useState(false);
+	const queryString = useQueryString();
 
 	const captureImage = () => {
 		const imageSrc = webcamRef.current.getScreenshot();
@@ -23,22 +25,28 @@ export default function CameraScan() {
 				.then((res) => res.blob())
 				.then((blob) => {
 					const formData = new FormData();
-					formData.append("image", blob, "capture.jpg");
+					formData.append("file", blob, "capture.jpg");
 
 					axios
-						.post("http://127.0.0.1:8000/api/", formData, {
-							headers: {
-								"Content-Type": "multipart/form-data",
-							},
-						})
-						.then(() => {
-							toast.success("Image uploaded successfully!");
+						.post(
+							"https://testscan.shoefitr.io/api/calculate_cloud_point/",
+							formData,
+							{
+								headers: {
+									"Content-Type": "multipart/form-data",
+								},
+							}
+						)
+						.then((response) => {
+							toast.success(response.data.message);
 							setLoading(false);
-							// router.push("/insole/proceed");
+							router.push(`/insole/proceed?${queryString}`);
 						})
 						.catch((error) => {
-							console.error("Error uploading image", error);
-							toast.error("Failed to upload image.");
+							const errorMessage =
+								error.response?.data?.error ||
+								"An error occurred";
+							toast.error(errorMessage);
 							setLoading(false);
 						});
 				});
