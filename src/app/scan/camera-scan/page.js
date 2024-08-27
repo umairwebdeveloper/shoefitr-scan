@@ -43,7 +43,7 @@ export default function CameraScan() {
 
 					axios
 						.post(
-							"https://testscan.shoefitr.io/api/calculation/",
+							"https://api.shoefitr.io/api/calculation/",
 							formData,
 							{
 								headers: {

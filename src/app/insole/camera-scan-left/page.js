@@ -29,7 +29,7 @@ export default function CameraScan() {
 
 					axios
 						.post(
-							"https://testscan.shoefitr.io/api/calculate_cloud_point/",
+							"https://api.shoefitr.io/api/calculate_cloud_point/",
 							formData,
 							{
 								headers: {

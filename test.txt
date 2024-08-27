@@ -67,7 +67,7 @@ export default function CameraScan() {
 				`recording-${Date.now()}.webm`
 			);
 			setLoading(true);
-			fetch("https://testscan.shoefitr.io/api/calculate-size/", {
+			fetch("https://api.shoefitr.io/api/calculate-size/", {
 				method: "POST",
 				body: formData,
 			})

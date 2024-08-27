@@ -14,7 +14,7 @@ const useMatchUserIdShopOwner = () => {
 		const fetchMatch = async () => {
 			try {
 				const response = await axios.post(
-					"https://testscan.shoefitr.io/api/match/ids/",
+					"https://api.shoefitr.io/api/match/ids/",
 					{
 						userid,
 						shopid,

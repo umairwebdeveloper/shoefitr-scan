@@ -27,7 +27,7 @@ const ShoeSizeSelectorTest = () => {
 
 	useEffect(() => {
 		axios
-			.get("https://testscan.shoefitr.io/api/shop/ids/")
+			.get("https://api.shoefitr.io/api/shop/ids/")
 			.then((response) => {
 				const shopOptions = response.data.map((username) => ({
 					value: username,
@@ -56,7 +56,7 @@ const ShoeSizeSelectorTest = () => {
 			// Fetch model names for the selected shop ID
 			axios
 				.get(
-					`https://testscan.shoefitr.io/api/shop/model-names/${selectedOption.value}/`
+					`https://api.shoefitr.io/api/shop/model-names/${selectedOption.value}/`
 				)
 				.then((response) => {
 					setModelNames(
@@ -137,7 +137,7 @@ const ShoeSizeSelectorTest = () => {
 
 		try {
 			const response = await axios.post(
-				"https://testscan.shoefitr.io/api/calculation/",
+				"https://api.shoefitr.io/api/calculation/",
 				formData,
 				{
 					headers: {

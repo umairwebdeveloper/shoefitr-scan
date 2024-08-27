@@ -42,7 +42,7 @@ export default function CameraScanMeasurements() {
 
 					axios
 						.post(
-							"https://testscan.shoefitr.io/api/calculation-only-measurements/",
+							"https://api.shoefitr.io/api/calculation-only-measurements/",
 							formData,
 							{
 								headers: {
