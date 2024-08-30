@@ -5,7 +5,6 @@ import Image from "next/image";
 import { FaChevronLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import useQueryString from "../../../hooks/useQueryString";
-import toast from "react-hot-toast";
 
 export default function Result() {
 	const router = useRouter();
@@ -28,15 +27,6 @@ export default function Result() {
 			</div>
 		);
 	}
-
-	const handleCopy = async (textToCopy) => {
-		try {
-			await navigator.clipboard.writeText(textToCopy);
-			toast.success("Copied to clipboard!");
-		} catch (err) {
-			toast.error("Failed to copy to clipboard.");
-		}
-	};
 
 	return (
 		<main>
@@ -61,67 +51,13 @@ export default function Result() {
 						alt="light bulb"
 					/>
 					<h3 className="shoefitr-secondary-heading">
-						Results (mm)
+						Results
 					</h3>
 				</div>
 				<div className="my-3">
 					<div className="card-body">
 						<div className="row">
-							<div className="col-md-6 mb-3">
-								<h3>Left Foot</h3>
-								<ul className="list-group">
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										Length:{" "}
-										<span>
-											{resultData?.length_l || "-"}
-										</span>
-									</li>
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										Ball:{" "}
-										<span>{resultData?.ball_l || "-"}</span>
-									</li>
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										Waist:{" "}
-										<span>
-											{resultData?.waist_l || "-"}
-										</span>
-									</li>
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										Instep:{" "}
-										<span>
-											{resultData?.instep_l || "-"}
-										</span>
-									</li>
-								</ul>
-							</div>
-							<div className="col-md-6 mb-3">
-								<h3>Right Foot</h3>
-								<ul className="list-group">
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										Length:{" "}
-										<span>
-											{resultData?.length_r || "-"}
-										</span>
-									</li>
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										Ball:{" "}
-										<span>{resultData?.ball_r || "-"}</span>
-									</li>
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										Waist:{" "}
-										<span>
-											{resultData?.waist_r || "-"}
-										</span>
-									</li>
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										Instep:{" "}
-										<span>
-											{resultData?.instep_r || "-"}
-										</span>
-									</li>
-								</ul>
-							</div>
-							<div className="col-md-6 py-3 d-flex justify-content-center align-items-center">
+							<div className="col-md-6 d-flex justify-content-center align-items-center">
 								<img
 									src={
 										resultData?.uri ||
@@ -138,32 +74,7 @@ export default function Result() {
 						<p className="m-0 p-0 text-uppercase">Correct size</p>
 						<span>{resultData?.correct_size || "-"}</span>
 					</div>
-					<div className="shoefitr-result-box2 p-3 text-center">
-						<p className="m-0 p-0 text-uppercase">
-							{resultData?.model_id || "-"} that fits you
-						</p>
-						<span className="d-flex justify-content-center align-items-center mt-1">
-							{resultData?.correct_size
-								? `Bloom${resultData?.correct_size}`
-								: "-"}
-							<span>
-								<Image
-									src="/assets/svg/copy.svg"
-									className="ms-2"
-									style={{ cursor: "pointer" }}
-									onClick={() =>
-										handleCopy(
-											`${resultData?.correct_size || "-"}`
-										)
-									}
-									width={40}
-									height={40}
-									alt="copy"
-								/>
-							</span>
-						</span>
-					</div>
-					<div className="shoefitr-result-box3 p-3 text-center">
+					<div className="shoefitr-result-box3 px-3 text-center">
 						{resultData?.picture_advice?.includes("-r") && (
 							<>
 								<p className="mb-1 text-uppercase">
