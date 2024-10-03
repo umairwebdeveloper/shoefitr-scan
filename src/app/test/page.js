@@ -136,9 +136,7 @@ const UserTest = () => {
 
 			<div className="container my-3">
 				<div className="p-3 bg-light rounded mb-4">
-					<h3 className="fs-2 fw-bold text-center">
-						Test Foot Size
-					</h3>
+					<h3 className="fs-2 fw-bold text-center">Test Foot Size</h3>
 					<p className="text-center text-muted">
 						Upload images of your feet and select relevant
 						information to receive an accurate shoe size
@@ -264,7 +262,9 @@ const UserTest = () => {
 						</button>
 					</div>
 					{responseError && (
-						<div className="alert alert-danger my-4">{error}</div>
+						<div className="alert alert-danger my-4">
+							{responseError}
+						</div>
 					)}
 					{response && (
 						<div className="my-4">
