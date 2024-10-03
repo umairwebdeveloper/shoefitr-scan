@@ -52,12 +52,7 @@ const UserTest = () => {
 	};
 
 	const handleScanTest = async () => {
-		if (
-			!selectedSystem ||
-			!selectedAgeGroup ||
-			!selectedSize ||
-			!image
-		) {
+		if (!selectedSystem || !selectedAgeGroup || !selectedSize || !image) {
 			toast.error("Please fill all the fields and upload an image.");
 			return;
 		}
@@ -271,14 +266,135 @@ const UserTest = () => {
 							<h4 className="fs-4 fw-bold mb-3 text-center">
 								Response
 							</h4>
-							<p className="fw-bold fs-1 text-center bg-light rounded-3 py-2 text-primary">
-								Size: 12
-							</p>
 							<img
 								src={response.uri}
 								alt="Image"
 								className="img-fluid w-100 rounded"
 							/>
+							<table className="table table-bordered my-3">
+								<tbody>
+									<tr>
+										<td>
+											<strong>Ball Advice</strong>
+										</td>
+										<td>{response.ball_advice}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Ball Fit</strong>
+										</td>
+										<td>{response.ball_fit}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Ball Left</strong>
+										</td>
+										<td>{response.ball_l}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Ball Right</strong>
+										</td>
+										<td>{response.ball_r}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Correct Size</strong>
+										</td>
+										<td>{response.correct_size}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Found</strong>
+										</td>
+										<td>{response.found}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Instep Advice</strong>
+										</td>
+										<td>{response.instep_advice}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Instep Fit</strong>
+										</td>
+										<td>{response.instep_fit}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Instep Left</strong>
+										</td>
+										<td>{response.instep_l}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Instep Right</strong>
+										</td>
+										<td>{response.instep_r}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Length Left</strong>
+										</td>
+										<td>{response.length_l}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Length Right</strong>
+										</td>
+										<td>{response.length_r}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Message</strong>
+										</td>
+										<td>{response.message}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Model ID</strong>
+										</td>
+										<td>{response.model_id}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Size</strong>
+										</td>
+										<td>{response.size}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Totally Fit</strong>
+										</td>
+										<td>{response.totally_fit}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Waist Left</strong>
+										</td>
+										<td>{response.waist_l}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Waist Right</strong>
+										</td>
+										<td>{response.waist_r}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Width Advise</strong>
+										</td>
+										<td>{response.width_advice}</td>
+									</tr>
+									<tr>
+										<td>
+											<strong>Width Fit</strong>
+										</td>
+										<td>{response.width_fit}</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					)}
 				</div>
