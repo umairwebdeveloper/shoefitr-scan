@@ -17,6 +17,7 @@ const UserTest = () => {
 	const [image, setImage] = useState(null);
 	const [response, setResponse] = useState(null);
 	const [responseError, setResponseError] = useState(null);
+	const [selectedHeight, setSelectedHeight] = useState(null);
 
 	useEffect(() => {
 		const defaultSystem = systemsData.find(
@@ -24,6 +25,11 @@ const UserTest = () => {
 		);
 		setSelectedSystem(defaultSystem);
 	}, []);
+
+	const heightOptions = Array.from({ length: 101 }, (_, i) => ({
+		value: `${100 + i}`,
+		label: `${100 + i} cm`,
+	}));
 
 	const handleSystemChange = (selectedOption) => {
 		setSelectedSystem(selectedOption);
@@ -47,12 +53,22 @@ const UserTest = () => {
 		setSelectedSize(selectedOption);
 	};
 
+	const handleHeightChange = (selectedOption) => {
+		setSelectedHeight(selectedOption);
+	};
+
 	const handleImageChange = (e) => {
 		setImage(e.target.files[0]);
 	};
 
 	const handleScanTest = async () => {
-		if (!selectedSystem || !selectedAgeGroup || !selectedSize || !image) {
+		if (
+			!selectedSystem ||
+			!selectedAgeGroup ||
+			!selectedSize ||
+			!image ||
+			!selectedHeight
+		) {
 			toast.error("Please fill all the fields and upload an image.");
 			return;
 		}
@@ -63,6 +79,7 @@ const UserTest = () => {
 		formData.append("selection", selectedAgeGroup);
 		formData.append("selectedGender", selectedGender);
 		formData.append("size", selectedSize.value);
+		formData.append("height", selectedHeight.value);
 		if (image) {
 			formData.append("picture", image);
 		}
@@ -147,6 +164,13 @@ const UserTest = () => {
 							options={systemsData}
 							value={selectedSystem}
 							onChange={handleSystemChange}
+						/>
+					</div>
+					<div className="mb-3">
+						<label className="form-label">Select Height:</label>
+						<Select
+							options={heightOptions}
+							onChange={handleHeightChange}
 						/>
 					</div>
 					<div className="mb-3">
