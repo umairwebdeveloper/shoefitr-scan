@@ -96,6 +96,10 @@ const UserTest = () => {
 					},
 				}
 			);
+			if (response.data.size_not_acc) {
+				toast.error(response.data.message);
+				return
+			}
 			setResponse(response.data);
 			toast.success("Request sent successfully.");
 			window.scrollTo(0, document.body.scrollHeight);
@@ -280,11 +284,6 @@ const UserTest = () => {
 							{loading ? "Sending..." : "Send"}
 						</button>
 					</div>
-					{responseError && (
-						<div className="alert alert-danger my-4">
-							{responseError}
-						</div>
-					)}
 					{response && (
 						<div className="my-4">
 							<h4 className="fs-4 fw-bold mb-3 text-center">
