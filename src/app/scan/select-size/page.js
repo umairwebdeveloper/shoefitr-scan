@@ -15,6 +15,7 @@ const ShoeSizeSelector = () => {
 	const [selectedAgeGroup, setSelectedAgeGroup] = useState("");
 	const [selectedGender, setSelectedGender] = useState("");
 	const [selectedSize, setSelectedSize] = useState("");
+	const [selectedHeight, setSelectedHeight] = useState("");
 	const [loading, setLoading] = useState(false);
 
 	const params = useQueryParams();
@@ -39,6 +40,9 @@ const ShoeSizeSelector = () => {
 		setSelectedAgeGroup(e.target.value);
 		setSelectedGender("");
 		setSelectedSize("");
+		if (e.target.value !== "adult") {
+			setSelectedHeight(null);
+		}
 	};
 
 	const handleGenderChange = (e) => {
@@ -50,6 +54,15 @@ const ShoeSizeSelector = () => {
 		setSelectedSize(selectedOption);
 	};
 
+	const handleHeightChange = (selectedOption) => {
+		setSelectedHeight(selectedOption);
+	};
+
+	const heightOptions = Array.from({ length: 101 }, (_, i) => {
+		const height = 100 + i;
+		return { value: height, label: `${height} cm` };
+	});
+
 	const handleScanNow = () => {
 		const selectedData = {
 			shopid,
@@ -59,6 +72,7 @@ const ShoeSizeSelector = () => {
 			selectedAgeGroup,
 			selectedGender,
 			selectedSize: selectedSize.value,
+			height: selectedHeight ? selectedHeight.value : null,
 		};
 		setLoading(true);
 		localStorage.setItem("shoeSizeData", JSON.stringify(selectedData));
@@ -181,6 +195,19 @@ const ShoeSizeSelector = () => {
 							</label>
 						</div>
 					</div>
+					{selectedAgeGroup === "adult" && (
+						<div className="mb-3">
+							<label className="form-label">
+								Select Height (cm):
+							</label>
+							<Select
+								options={heightOptions}
+								value={selectedHeight}
+								onChange={handleHeightChange}
+								placeholder="Select your height"
+							/>
+						</div>
+					)}
 					{isAdultUS && (
 						<div className="mb-3">
 							<label className="form-label d-block">

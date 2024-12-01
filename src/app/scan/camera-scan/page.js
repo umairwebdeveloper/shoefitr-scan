@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import useQueryString from "../../../hooks/useQueryString";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+
 
 export default function CameraScan() {
 	const router = useRouter();
@@ -39,6 +41,7 @@ export default function CameraScan() {
 					formData.append("size", shoeSizeData.selectedSize);
 					formData.append("selection", shoeSizeData.selectedAgeGroup);
 					formData.append("system", shoeSizeData.selectedSystem);
+					formData.append("height", shoeSizeData.height);
 					formData.append("picture", blob, "capture.jpg");
 
 					axios
@@ -53,13 +56,39 @@ export default function CameraScan() {
 						)
 						.then((response) => {
 							if (response.data.found) {
-								toast.success(response.data.message);
 								setLoading(false);
-								localStorage.setItem(
-									"responseData",
-									JSON.stringify(response.data)
-								);
-								router.push(`/scan/result?${queryString}`);
+								if (response.data.size_not_acc) {
+									Swal.fire({
+										title: "Size Confirmation",
+										text: `The selected height or size may not be correct. Do you want to continue with size ${shoeSizeData.selectedSize} or change it?`,
+										icon: "warning",
+										showCancelButton: true,
+										confirmButtonText: "Continue",
+										cancelButtonText: "Change Size",
+										allowOutsideClick: false,
+									}).then((result) => {
+										if (result.isConfirmed) {
+											localStorage.setItem(
+												"responseData",
+												JSON.stringify(response.data)
+											);
+											router.push(
+												`/scan/result?${queryString}`
+											);
+										} else {
+											router.push(
+												`/scan/select-size?${queryString}`
+											);
+										}
+									});
+								} else {
+									toast.success(response.data.message);
+									localStorage.setItem(
+										"responseData",
+										JSON.stringify(response.data)
+									);
+									router.push(`/scan/result?${queryString}`);
+								}
 							} else {
 								toast.error("No data found. Please try again.");
 								setLoading(false);

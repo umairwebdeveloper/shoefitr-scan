@@ -97,7 +97,9 @@ const UserTest = () => {
 				}
 			);
 			if (response.data.size_not_acc) {
-				toast.error(response.data.message);
+				toast.error(
+					"Your input size appears to be wrong, please correct!"
+				);
 				return
 			}
 			setResponse(response.data);
